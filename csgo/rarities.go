@@ -59,9 +59,9 @@ func mapToRarity(id string, data map[string]interface{}, language *language) (*R
 
 // getRarities retrieves all Rarities from the provided items data and returns them
 // in the format map[rarityId]Rarity.
-func (c *csgoItems) getRarities() (map[string]*Rarity, error) {
+func (c *csgoItems) getRarities() (map[int]*Rarity, error) {
 
-	response := make(map[string]*Rarity)
+	response := make(map[int]*Rarity)
 
 	rarities, err := crawlToType[map[string]interface{}](c.items, "rarities")
 	if err != nil {
@@ -80,7 +80,7 @@ func (c *csgoItems) getRarities() (map[string]*Rarity, error) {
 			return nil, err
 		}
 
-		response[id] = rarityMap
+		response[rarityMap.Index] = rarityMap
 	}
 
 	return response, nil

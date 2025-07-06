@@ -49,8 +49,8 @@ func mapToKeychain(index int, data map[string]interface{}, language *language) (
 	return response, nil
 }
 
-func (c *csgoItems) getKeychains() (map[string]*Keychain, error) {
-	response := make(map[string]*Keychain)
+func (c *csgoItems) getKeychains() (map[int]*Keychain, error) {
+	response := make(map[int]*Keychain)
 
 	chains, err := crawlToType[map[string]interface{}](c.items, "keychain_definitions")
 	if err != nil {
@@ -70,7 +70,7 @@ func (c *csgoItems) getKeychains() (map[string]*Keychain, error) {
 
 		chainMap, err := mapToKeychain(iIndex, chainData, c.language)
 
-		response[chainMap.Id] = chainMap
+		response[chainMap.Index] = chainMap
 
 	}
 

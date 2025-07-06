@@ -101,14 +101,15 @@ var (
 // itemContainer is just a grouping of relevant items_game items that are parsed
 // through getItems.
 type itemContainer struct {
-	weapons         map[string]*Weapon
-	knives          map[string]*Weapon
-	gloves          map[string]*Gloves
-	equipment       map[string]*Equipment
-	crates          map[string]*WeaponCrate
-	stickerCapsules map[string]*StickerCapsule
-	tools           map[string]*Tool
-	characters      map[string]*Character
+	weapons         map[int]*Weapon
+	knives          map[int]*Weapon
+	gloves          map[int]*Gloves
+	equipment       map[int]*Equipment
+	crates          map[int]*WeaponCrate
+	stickerCapsules map[int]*StickerCapsule
+	tools           map[int]*Tool
+	characters      map[int]*Character
+	defIndecies     map[int]interface{}
 }
 
 // Weapon represents a skinnable item that is also a Weapon in Csgo.
@@ -473,14 +474,15 @@ func mapToCharacter(index int, data map[string]interface{}, language *language) 
 // All items are returned within the itemContainer part of the response.
 func (c *csgoItems) getItems() (*itemContainer, error) {
 	response := &itemContainer{
-		weapons:         make(map[string]*Weapon),
-		knives:          make(map[string]*Weapon),
-		gloves:          make(map[string]*Gloves),
-		equipment:       make(map[string]*Equipment),
-		crates:          make(map[string]*WeaponCrate),
-		stickerCapsules: make(map[string]*StickerCapsule),
-		tools:           make(map[string]*Tool),
-		characters:      make(map[string]*Character),
+		weapons:         make(map[int]*Weapon),
+		knives:          make(map[int]*Weapon),
+		gloves:          make(map[int]*Gloves),
+		equipment:       make(map[int]*Equipment),
+		crates:          make(map[int]*WeaponCrate),
+		stickerCapsules: make(map[int]*StickerCapsule),
+		tools:           make(map[int]*Tool),
+		characters:      make(map[int]*Character),
+		defIndecies:     make(map[int]interface{}),
 	}
 
 	items, err := crawlToType[map[string]interface{}](c.items, "items")
@@ -508,32 +510,36 @@ func (c *csgoItems) getItems() (*itemContainer, error) {
 			return nil, err
 		}
 
+		if converted != nil {
+			response.defIndecies[iIndex] = converted
+		}
+
 		switch t := converted.(type) {
 		case *Weapon:
 			if itemMap["prefab"].(string) == "melee_unusual" {
-				response.knives[t.Id] = t
+				response.knives[t.Index] = t
 				continue
 			}
 
-			response.weapons[t.Id] = t
+			response.weapons[t.Index] = t
 
 		case *Gloves:
-			response.gloves[t.Id] = t
+			response.gloves[t.Index] = t
 
 		case *Equipment:
-			response.equipment[t.Id] = t
+			response.equipment[t.Index] = t
 
 		case *WeaponCrate:
-			response.crates[t.Id] = t
+			response.crates[t.Index] = t
 
 		case *StickerCapsule:
-			response.stickerCapsules[t.Id] = t
+			response.stickerCapsules[t.Index] = t
 
 		case *Tool:
-			response.tools[t.Id] = t
+			response.tools[t.Index] = t
 
 		case *Character:
-			response.characters[t.Id] = t
+			response.characters[t.Index] = t
 		}
 	}
 

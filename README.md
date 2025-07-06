@@ -3,6 +3,8 @@
 `go-csgo-item-parser` can be used to extract CSGO entities from the items_game.txt and `csgo_<language>.txt`
 files of the game.
 
+Forked from [RustedTurnip](https://github.com/RustedTurnip/go-csgo-item-parser) - modified for personal project
+
 
 ## Support
 

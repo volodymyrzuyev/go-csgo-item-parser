@@ -2,6 +2,7 @@ package csgo
 
 import (
 	"fmt"
+	"strconv"
 
 	"github.com/pkg/errors"
 	"github.com/shopspring/decimal"
@@ -16,6 +17,7 @@ var (
 // range the skin can be in. Every entities.Skin has an associated Paintkit.
 type Paintkit struct {
 	Id          string          `json:"id"`
+	Index       int             `json:"index"`
 	Name        string          `json:"name"`
 	Description string          `json:"description"`
 	RarityId    string          `json:"rarityId"`
@@ -83,9 +85,9 @@ func mapToPaintkit(data map[string]interface{}, language *language) (*Paintkit, 
 
 // getPaintkits gathers all Paintkits in the provided items data and returns them
 // as map[paintkitId]Paintkit.
-func (c *csgoItems) getPaintkits() (map[string]*Paintkit, error) {
+func (c *csgoItems) getPaintkits() (map[int]*Paintkit, error) {
 
-	response := map[string]*Paintkit{}
+	response := map[int]*Paintkit{}
 
 	rarities, err := crawlToType[map[string]interface{}](c.items, "paint_kits_rarity")
 	if err != nil {
@@ -99,8 +101,13 @@ func (c *csgoItems) getPaintkits() (map[string]*Paintkit, error) {
 
 	for index, kit := range kits {
 		mKit, ok := kit.(map[string]interface{})
+		iIndex, err := strconv.Atoi(index)
 		if !ok {
 			return nil, fmt.Errorf("unexpected Paintkit layout in paint_kits for index (%s)", index)
+		}
+
+		if err != nil {
+			return nil, fmt.Errorf("Unable to change index to int index (%s)", index)
 		}
 
 		converted, err := mapToPaintkit(mKit, c.language)
@@ -121,7 +128,8 @@ func (c *csgoItems) getPaintkits() (map[string]*Paintkit, error) {
 			converted.RarityId = "default"
 		}
 
-		response[converted.Id] = converted
+		converted.Index = iIndex
+		response[converted.Index] = converted
 	}
 
 	return response, nil

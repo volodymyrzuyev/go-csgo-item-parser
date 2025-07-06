@@ -41,9 +41,9 @@ var (
 )
 
 type stickerSubtypeContainer struct {
-	stickers map[string]*Stickerkit
-	sprays   map[string]*Spraykit
-	patches  map[string]*Patchkit
+	stickers map[int]*Stickerkit
+	sprays   map[int]*Spraykit
+	patches  map[int]*Patchkit
 }
 
 // Stickerkit represents a Stickerkit object from the items_game file.
@@ -239,9 +239,9 @@ func stickerSubtypeMapper(index int, name string, data map[string]interface{}, l
 func (c *csgoItems) getStickerkits() (*stickerSubtypeContainer, error) {
 
 	response := &stickerSubtypeContainer{
-		stickers: make(map[string]*Stickerkit),
-		sprays:   make(map[string]*Spraykit),
-		patches:  make(map[string]*Patchkit),
+		stickers: make(map[int]*Stickerkit),
+		sprays:   make(map[int]*Spraykit),
+		patches:  make(map[int]*Patchkit),
 	}
 
 	kits, err := crawlToType[map[string]interface{}](c.items, "sticker_kits")
@@ -275,13 +275,13 @@ func (c *csgoItems) getStickerkits() (*stickerSubtypeContainer, error) {
 
 		switch t := converted.(type) {
 		case *Stickerkit:
-			response.stickers[t.Id] = t
+			response.stickers[t.Index] = t
 
 		case *Spraykit:
-			response.sprays[t.Id] = t
+			response.sprays[t.Index] = t
 
 		case *Patchkit:
-			response.patches[t.Id] = t
+			response.patches[t.Index] = t
 		}
 	}
 

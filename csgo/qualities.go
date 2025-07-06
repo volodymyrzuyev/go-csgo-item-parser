@@ -52,8 +52,8 @@ func mapToQuality(id string, data map[string]interface{}, language *language) (*
 	return response, nil
 }
 
-func (c *csgoItems) getQualities() (map[string]*Quality, error) {
-	response := make(map[string]*Quality)
+func (c *csgoItems) getQualities() (map[int]*Quality, error) {
+	response := make(map[int]*Quality)
 
 	qualities, err := crawlToType[map[string]interface{}](c.items, "qualities")
 	if err != nil {
@@ -71,7 +71,7 @@ func (c *csgoItems) getQualities() (map[string]*Quality, error) {
 			return nil, err
 		}
 
-		response[id] = qualityMap
+		response[qualityMap.Index] = qualityMap
 	}
 
 	return response, nil

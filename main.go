@@ -3,10 +3,10 @@ package main
 import (
 	"encoding/json"
 	"flag"
-	"github.com/rustedturnip/go-csgo-item-parser/csgo"
+	"github.com/volodymyrzuyev/go-csgo-item-parser/csgo"
 	"os"
 
-	"github.com/rustedturnip/go-csgo-item-parser/parser"
+	"github.com/volodymyrzuyev/go-csgo-item-parser/parser"
 )
 
 var (

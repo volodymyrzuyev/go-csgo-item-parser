@@ -44,8 +44,8 @@ func mapToMusickit(index int, data map[string]interface{}, language *language) (
 	return response, nil
 }
 
-func (c *csgoItems) getMusickits() (map[string]*Musickit, error) {
-	response := make(map[string]*Musickit)
+func (c *csgoItems) getMusickits() (map[int]*Musickit, error) {
+	response := make(map[int]*Musickit)
 
 	musickits, err := crawlToType[map[string]interface{}](c.items, "music_definitions")
 	if err != nil {
@@ -65,7 +65,7 @@ func (c *csgoItems) getMusickits() (map[string]*Musickit, error) {
 
 		musicMap, err := mapToMusickit(iIndex, musicData, c.language)
 
-		response[musicMap.Id] = musicMap
+		response[musicMap.Index] = musicMap
 
 	}
 

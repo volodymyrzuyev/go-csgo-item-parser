@@ -66,20 +66,6 @@ func New(languageData, itemData map[string]interface{}) (*Csgo, error) {
 		return nil, err
 	}
 
-	// Knives are not categorised into sets within the items_game.txt file,
-	// so they are handled separately.
-	knifeSet, err := items.getKnifeSet(mapTypeToMapInterface(itemEntities.knives))
-	if err != nil {
-		return nil, err
-	}
-
-	// Gloves are not categorised into sets within the items_game.txt file,
-	// so they are handled separately.
-	gloveSet, err := items.getIconSet(mapTypeToMapInterface(itemEntities.gloves))
-	if err != nil {
-		return nil, err
-	}
-
 	return &Csgo{
 		Rarities:   rarities,
 		Qualities:  qualities,
@@ -87,8 +73,6 @@ func New(languageData, itemData map[string]interface{}) (*Csgo, error) {
 		Keychains:  keychains,
 		Musickits:  musickits,
 		WeaponSets: weaponSets,
-		KnifeSet:   knifeSet,
-		GloveSet:   gloveSet,
 
 		Stickerkits: stickerEnteties.stickers,
 		Spraykits:   stickerEnteties.sprays,
@@ -102,6 +86,7 @@ func New(languageData, itemData map[string]interface{}) (*Csgo, error) {
 		StickerCapsules: itemEntities.stickerCapsules,
 		Tools:           itemEntities.tools,
 		Characters:      itemEntities.characters,
+		DefIndecies:     itemEntities.defIndecies,
 	}, nil
 }
 
@@ -203,29 +188,28 @@ func newCsgoItems(itemData map[string]interface{}, language *language) (*csgoIte
 type Csgo struct {
 
 	// CSGO types
-	Rarities   map[string]*Rarity    `json:"Rarities"`
-	Qualities  map[string]*Quality   `json:"Qualities"`
-	Paintkits  map[string]*Paintkit  `json:"Paintkits"`
-	Keychains  map[string]*Keychain  `json:"Keychains"`
-	Musickits  map[string]*Musickit  `json:"Musickit"`
+	Rarities   map[int]*Rarity       `json:"Rarities"`
+	Qualities  map[int]*Quality      `json:"Qualities"`
+	Paintkits  map[int]*Paintkit     `json:"Paintkits"`
+	Keychains  map[int]*Keychain     `json:"Keychains"`
+	Musickits  map[int]*Musickit     `json:"Musickit"`
 	WeaponSets map[string]*WeaponSet `json:"WeaponSets"`
-	KnifeSet   map[string][]string   `json:"KnifeSet"`
-	GloveSet   map[string][]string   `json:"GloveSet"`
 
 	// Sticker subtypes
-	Stickerkits map[string]*Stickerkit `json:"Stickerkits"`
-	Spraykits   map[string]*Spraykit   `json:"Spraykits"`
-	Patchkits   map[string]*Patchkit   `json:"Patchkits"`
+	Stickerkits map[int]*Stickerkit `json:"Stickerkits"`
+	Spraykits   map[int]*Spraykit   `json:"Spraykits"`
+	Patchkits   map[int]*Patchkit   `json:"Patchkits"`
 
 	// items
-	Guns            map[string]*Weapon         `json:"Guns"`
-	Knives          map[string]*Weapon         `json:"Knives"`
-	Gloves          map[string]*Gloves         `json:"Gloves"`
-	Equipment       map[string]*Equipment      `json:"Equipment"`
-	Tools           map[string]*Tool           `json:"Tools"`
-	WeaponCrates    map[string]*WeaponCrate    `json:"WeaponCrates"`
-	StickerCapsules map[string]*StickerCapsule `json:"StickerCapsules"`
-	Characters      map[string]*Character      `json:"Characters"`
+	Guns            map[int]*Weapon         `json:"Guns"`
+	Knives          map[int]*Weapon         `json:"Knives"`
+	Gloves          map[int]*Gloves         `json:"Gloves"`
+	Equipment       map[int]*Equipment      `json:"Equipment"`
+	Tools           map[int]*Tool           `json:"Tools"`
+	WeaponCrates    map[int]*WeaponCrate    `json:"WeaponCrates"`
+	StickerCapsules map[int]*StickerCapsule `json:"StickerCapsules"`
+	Characters      map[int]*Character      `json:"Characters"`
+	DefIndecies     map[int]interface{}     `json:"DefIndecies"`
 }
 
 var (
