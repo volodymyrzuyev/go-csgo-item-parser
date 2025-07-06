@@ -83,6 +83,11 @@ var (
 		"csgo_tool": func(items *csgoItems, index int, data map[string]interface{}) (interface{}, error) {
 			return mapToTool(index, data, items.language)
 		},
+
+		"musickit_prefab": func(items *csgoItems, index int, data map[string]interface{}) (interface{}, error) {
+			return mapToTool(index, data, items.language)
+		},
+
 		"customplayertradable": func(items *csgoItems, index int, data map[string]interface{}) (interface{}, error) {
 			return mapToCharacter(index, data, items.language)
 		},
@@ -507,6 +512,10 @@ func (c *csgoItems) getItems() (*itemContainer, error) {
 
 		converted, err := convertItem(c, iIndex, itemMap)
 		if err != nil {
+			// music kits defindex fix
+			if iIndex == 1314 {
+				continue
+			}
 			return nil, err
 		}
 
@@ -542,6 +551,9 @@ func (c *csgoItems) getItems() (*itemContainer, error) {
 			response.characters[t.Index] = t
 		}
 	}
+
+	// music kit fix
+	response.tools[1314] = &Tool{Id: response.tools[58].Id, Index: 1314, Name: response.tools[58].Name}
 
 	return response, nil
 }
