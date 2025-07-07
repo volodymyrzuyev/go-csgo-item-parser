@@ -554,6 +554,7 @@ func (c *csgoItems) getItems() (*itemContainer, error) {
 
 	// music kit fix
 	response.tools[1314] = &Tool{Id: response.tools[58].Id, Index: 1314, Name: response.tools[58].Name}
+	response.defIndecies[1314] = response.tools[1314]
 
 	return response, nil
 }
