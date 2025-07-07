@@ -74,9 +74,10 @@ func New(languageData, itemData map[string]interface{}) (*Csgo, error) {
 		Musickits:  musickits,
 		WeaponSets: weaponSets,
 
-		Stickerkits: stickerEnteties.stickers,
-		Spraykits:   stickerEnteties.sprays,
-		Patchkits:   stickerEnteties.patches,
+		Stickerkits:     stickerEnteties.stickers,
+		Spraykits:       stickerEnteties.sprays,
+		Patchkits:       stickerEnteties.patches,
+		AllStickerItems: stickerEnteties.allStickers,
 
 		Guns:            itemEntities.weapons,
 		Knives:          itemEntities.knives,
@@ -196,9 +197,10 @@ type Csgo struct {
 	WeaponSets map[string]*WeaponSet `json:"WeaponSets"`
 
 	// Sticker subtypes
-	Stickerkits map[int]*Stickerkit `json:"Stickerkits"`
-	Spraykits   map[int]*Spraykit   `json:"Spraykits"`
-	Patchkits   map[int]*Patchkit   `json:"Patchkits"`
+	Stickerkits     map[int]*Stickerkit `json:"Stickerkits"`
+	Spraykits       map[int]*Spraykit   `json:"Spraykits"`
+	Patchkits       map[int]*Patchkit   `json:"Patchkits"`
+	AllStickerItems map[int]interface{} `json:"AllStickerItems"`
 
 	// items
 	Guns            map[int]*Weapon         `json:"Guns"`
