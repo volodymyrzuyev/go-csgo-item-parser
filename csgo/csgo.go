@@ -88,6 +88,7 @@ func New(languageData, itemData map[string]interface{}) (*Csgo, error) {
 		Tools:           itemEntities.tools,
 		Characters:      itemEntities.characters,
 		DefIndecies:     itemEntities.defIndecies,
+		Collectables:    itemEntities.collectables,
 	}, nil
 }
 
@@ -211,6 +212,7 @@ type Csgo struct {
 	WeaponCrates    map[int]*WeaponCrate    `json:"WeaponCrates"`
 	StickerCapsules map[int]*StickerCapsule `json:"StickerCapsules"`
 	Characters      map[int]*Character      `json:"Characters"`
+	Collectables    map[int]*Collectible    `json:"Collectables"`
 	DefIndecies     map[int]interface{}     `json:"DefIndecies"`
 }
 
